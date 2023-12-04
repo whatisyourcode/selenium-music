@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <title>ArtistPageNext Result</title>
+</head>
+<body>
+
+<h1>ArtistPageNext Result</h1>
+
+<table>
+  <thead>
+  <tr>
+    <th>Title</th>
+    <th>Artist</th>
+    <th>Album</th>
+    <th>Image</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="song : ${pageNext.getSongList()}"
+      th:data-title="${song[0]}" th:data-artist="${song[1]}"
+      onclick="requestSong(this.getAttribute('data-title'), this.getAttribute('data-artist'))">
+      <td th:text="${song[0]}"></td>
+      <td th:text="${song[1]}"></td>
+      <td th:text="${song[2]}"></td>
+      <td th:text="${song[3]}"></td>
+  </tr>
+  </tbody>
+</table>
+
+
+
+<div>
+    <!-- Prev 버튼 -->
+    <a th:if="${pageNext.getCurrentPage() > 1}"
+       th:href="@{'/api/song/artist-song/' + ${pageNext.getArtistId()} + '/prev'}" th:text="'<'"></a>
+
+    <span th:each="pageNumber : ${#numbers.sequence(1, pageNext.getTotalSong() / 30)}">
+        <a th:href="@{'/api/song/artist-song/' + ${pageNext.getArtistId()} + '/' + ${pageNumber}}" th:text="${pageNumber}"></a>
+    </span>
+
+    <!--- Prev 버튼 -->
+    <a th:if="${pageNext.getCurrentPage() >  pageNext.getTotalSong() / 30 }"
+       th:href="@{'/api/song/artist-song/' + ${pageNext.getArtistId()} +  '/next'}" th:text="'>'"></a>
+</div>
+
+<!-- 필요한 스크립트 -->
+<script>
+    function requestSong(title, artist) {
+        // AJAX 호출
+        $.ajax({
+            url: '/api/song/request',
+            type: 'POST',
+            data: {
+                title: title,
+                artist: artist
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

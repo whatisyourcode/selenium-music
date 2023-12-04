@@ -1,0 +1,52 @@
+<!-- songResult.html -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artist Result</title>
+</head>
+<body>
+
+<h1>Artist Result</h1>
+
+<p>SearchName: <span th:text="${artist}"></span></p>
+<p>Page: <span th:text="${page}"></span></p>
+
+<table>
+    <thead>
+    <tr>
+        <th>Artist ID</th>
+        <th>Singer</th>
+        <th>Gender</th>
+        <th>Country</th>
+        <th>Image</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="data, img : ${artistData.getSongList()}" th:data-artistid="${data[0]}" th:onclick="'handleClick(this)'">
+        <td th:text="${data[0]}"></td>
+        <td th:text="${data[1]}"></td>
+        <td th:text="${data[2]}"></td>
+        <td th:text="${data[3]}"></td>
+        <td th:text="${data[4]}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- Thymeleaf를 사용한 JavaScript 초기화 -->
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    function handleClick(element) {
+        // 클릭한 앨범의 AlbumId 사용
+        var artistId = element.getAttribute('data-artistid');
+        console.log('Clicked ArtistId: ' + artistId);
+
+        // TODO: API 호출 또는 다른 동작 수행 코드 추가
+        // 예시로 API 호출
+        window.location.href = '/api/song/artist-song/' + artistId;
+    }
+    /*]]>*/
+</script>
+</body>
+</html><!-- songResult.html -->

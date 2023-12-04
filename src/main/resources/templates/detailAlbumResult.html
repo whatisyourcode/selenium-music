@@ -1,0 +1,57 @@
+<!-- songResult.html -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <title>Song Result</title>
+</head>
+<body>
+
+<h1>Detail Album Result</h1>
+
+<p>SearchName: <span th:text="${title}"></span></p>
+<p>Page: <span th:text="${page}"></span></p>
+
+<table>
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Artist</th>
+        <th>dtoSinger</th>
+        <th>dtoSince</th>
+        <th>Image</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="song : ${albumDetailData.getSongList()}"
+        th:data-title="${song[0]}" th:data-artist="${song[1]}"
+        onclick="requestSong(this.getAttribute('data-title'), this.getAttribute('data-artist'))">
+        <td th:text="${song[0]}"></td>
+        <td th:text="${song[1]}"></td>
+        <td th:text="${song[2]}"></td>
+        <td th:text="${song[3]}"></td>
+        <td th:text="${song[4]}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- 필요한 스크립트 -->
+<script>
+    function requestSong(title, artist) {
+        // AJAX 호출
+        $.ajax({
+            url: '/api/song/request',
+            type: 'POST',
+            data: {
+                title: title,
+                artist: artist
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

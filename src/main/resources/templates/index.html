@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>노래 검색</title>
+</head>
+<body>
+<h2>검색</h2>
+<form action="@{/search}" method="get" id="searchForm">
+    <label for="searchInput">검색:</label>
+    <select name="type" id="searchType">
+        <option value="title">노래</option>
+        <option value="album">앨범</option>
+        <option value="artist">가수</option>
+    </select>
+    <!-- required는 해당 입력 필드에 값이 반드시 입력되어야 함을 나타냄-->
+    <input type="text" id="searchInput" name="keyword" required>
+    <button type="submit" onclick="submitForm()">검색</button>
+
+    <script th:inline="javascript">
+        function submitForm() {
+            var type = document.getElementById("searchType").value;
+            var keyword = document.getElementById("searchInput").value;
+            var form = document.getElementById("searchForm");
+
+            if (type === 'title') {
+                form.action = '/api/song/title/' + keyword + '/1';
+            } else if (type === 'album') {
+                form.action = '/api/song/album/' + keyword + '/1';
+            } else if (type === 'artist') {
+                form.action = '/api/song/artist/' + keyword;
+            }
+            form.submit();
+        }
+    </script>
+</form>
+</body>
+</html>
